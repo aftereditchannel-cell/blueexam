@@ -1,4 +1,4 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyULTHObvnzn0xuDU5aolKMru1a9hHddjLBUwZqz85Vea_xniMoocG6deTeUm1S69jQnQ/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbymGwjNrIxVIDEQmjr0UEYC9TqmMJYmD_kFhkljUC42JfCIfD9qEpIuHxXiG-uCYFQ/exec";
 
 // تغییر تم
 function toggleTheme() {
