@@ -1,23 +1,6 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8GDeRbqcqTxJA5tb_YbDalowLHzJ5X9m2Za60cZqJ-Av-D1UyXpYRH-TnM_CfHACY/exec";
 
-// تغییر تم
-function toggleTheme() {
-  document.body.classList.toggle("dark");
-  localStorage.setItem("theme", document.body.classList.contains("dark"));
-}
-
-window.addEventListener("DOMContentLoaded", () => {
-  // اعمال تم قبلی
-  if (localStorage.getItem("theme") === "true") {
-    document.body.classList.add("dark");
-  }
-
-  // Event listeners
-  document.getElementById("themeBtn").addEventListener("click", toggleTheme);
-  document.getElementById("signupBtn").addEventListener("click", signUp);
-  document.getElementById("signinBtn").addEventListener("click", signIn);
-});
-
+// ثبت نام
 async function signUp() {
   const data = {
     type: "teacher",
@@ -27,38 +10,29 @@ async function signUp() {
     school: document.getElementById("su_school").value
   };
 
-  if (!data.name || !data.nationalId || !data.phone || !data.school) {
-    alert("Please fill all fields");
-    return;
-  }
-
-  document.querySelector(".loader").style.display = "block";
-
   try {
     const res = await fetch(SCRIPT_URL, {
       method: "POST",
-      headers: {"Content-Type": "application/json"},
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
 
     const result = await res.json();
-    alert(result.status === "success" ? "Registration successful!" : "Error: " + result.message);
 
-  } catch(err) {
-    alert("Error: " + err.message);
-  } finally {
-    document.querySelector(".loader").style.display = "none";
+    if (result.status === "success") {
+      alert("Registration successful!");
+    } else {
+      alert("Error: " + result.message);
+    }
+
+  } catch (err) {
+    alert("Fetch error: " + err.message);
   }
 }
 
+// ورود
 async function signIn() {
   const nationalId = document.getElementById("si_nationalId").value;
-  if (!nationalId) {
-    alert("Enter National ID");
-    return;
-  }
-
-  document.querySelector(".loader").style.display = "block";
 
   try {
     const res = await fetch(`${SCRIPT_URL}?checkTeacher=${nationalId}`);
@@ -70,9 +44,8 @@ async function signIn() {
     } else {
       alert("Teacher not found. Please register first.");
     }
-  } catch(err) {
-    alert("Error: " + err.message);
-  } finally {
-    document.querySelector(".loader").style.display = "none";
+
+  } catch (err) {
+    alert("Fetch error: " + err.message);
   }
 }
