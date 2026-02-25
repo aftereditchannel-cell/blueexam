@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Exam</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="loader.css">
+</head>
+<body>
+<div class="container">
+  <h2 id="examTitle"></h2>
+  <div id="questionBox"></div>
+  <input id="studentId" placeholder="National ID">
+  <button onclick="submitExam()">Submit</button>
+  <div class="loader"></div>
+</div>
+
+<script src="script.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const examId = params.get("id");
+
+async function loadExam() {
+  const res = await fetch(SCRIPT_URL);
+  const data = await res.json();
+  const exam = data.find(r => r[1] === examId && r[0] === "exam");
+
+  if (!exam) return;
+
+  document.getElementById("examTitle").innerText = exam[3];
+  document.getElementById("questionBox").innerHTML = `
+    <p>${exam[4]}</p>
+    <input type="radio" name="ans" value="1">${exam[5]}<br>
+    <input type="radio" name="ans" value="2">${exam[6]}<br>
+    <input type="radio" name="ans" value="3">${exam[7]}<br>
+    <input type="radio" name="ans" value="4">${exam[8]}<br>
+  `;
+  window.correctAnswer = exam[9];
+}
+
+function submitExam() {
+  const selected = document.querySelector("input[name='ans']:checked").value;
+  const score = selected === window.correctAnswer ? 1 : 0;
+
+  sendData({
+    type: "result",
+    examId: examId,
+    teacher: "",
+    title: "",
+    question: "",
+    opt1: "",
+    opt2: "",
+    opt3: "",
+    opt4: "",
+    correct: "",
+    studentId: studentId.value,
+    score: score
+  });
+
+  alert("Score: " + score);
+}
+
+loadExam();
+</script>
+</body>
+</html>
