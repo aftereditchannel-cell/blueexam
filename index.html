@@ -1,27 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Teacher Register</title>
+  <title>Teacher Panel</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="loader.css">
 </head>
 <body>
+
 <div class="container">
-  <h2>Teacher Registration</h2>
-  <input id="teacherName" placeholder="Your Name">
-  <button onclick="register()">Register</button>
+
+  <h2>Teacher Panel</h2>
+
+  <!-- SIGN UP -->
+  <div id="signupBox">
+    <h3>Sign Up</h3>
+    <input id="su_name" placeholder="Full Name">
+    <input id="su_nationalId" placeholder="National ID">
+    <input id="su_phone" placeholder="Phone Number">
+    <input id="su_school" placeholder="School Name">
+    <button onclick="signUp()">Register</button>
+  </div>
+
+  <hr>
+
+  <!-- SIGN IN -->
+  <div id="loginBox">
+    <h3>Sign In</h3>
+    <input id="si_nationalId" placeholder="123456789">
+    <button onclick="signIn()">Login</button>
+  </div>
+
   <div class="loader"></div>
   <button onclick="toggleTheme()">Change Theme</button>
+
 </div>
 
 <script src="script.js"></script>
+
 <script>
-function register() {
-  const name = document.getElementById("teacherName").value;
-  localStorage.setItem("teacher", name);
-  alert("Registered!");
-  window.location.href = "create.html";
+
+async function signUp() {
+
+  const data = {
+    type: "teacher",
+    name: document.getElementById("su_name").value,
+    nationalId: document.getElementById("su_nationalId").value,
+    phone: document.getElementById("su_phone").value,
+    school: document.getElementById("su_school").value
+  };
+
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVScSdkk0T87qwpNmaX5yT6CGPY4oBJcZCwYJ5qT-P2RTh001Vys_yhB8HCbmjjzhb/exec";
+    method: "POST",
+    body: JSON.stringify(data)
+  });
+
+  const result = await res.json();
+
+  if (result.status === "success") {
+    alert("Registration successful!");
+  } else {
+    alert("Error!");
+  }
 }
+
+
+
+async function signIn() {
+
+  const nationalId = document.getElementById("si_nationalId").value;
+
+  const res = await fetch(SCRIPT_URL + "?checkTeacher=" + nationalId);
+  const result = await res.json();
+
+  if (result.exists) {
+    localStorage.setItem("teacherNationalId", nationalId);
+    window.location.href = "create.html";
+  } else {
+    alert("Teacher not found. Please register first.");
+  }
+}
+
 </script>
+
 </body>
 </html>
