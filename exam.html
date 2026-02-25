@@ -38,8 +38,21 @@ async function loadExam() {
 }
 
 function submitExam() {
-  const selected = document.querySelector("input[name='ans']:checked").value;
-  const score = selected === window.correctAnswer ? 1 : 0;
+  const selectedOption = document.querySelector("input[name='ans']:checked");
+
+  if (!selectedOption) {
+    alert("Please select an answer");
+    return;
+  }
+
+  const studentNationalId = document.getElementById("studentId").value;
+
+  if (!studentNationalId) {
+    alert("123456789");
+    return;
+  }
+
+  const score = selectedOption.value === window.correctAnswer ? 1 : 0;
 
   sendData({
     type: "result",
@@ -52,14 +65,12 @@ function submitExam() {
     opt3: "",
     opt4: "",
     correct: "",
-    studentId: studentId.value,
+    studentId: studentNationalId,
     score: score
   });
 
   alert("Score: " + score);
 }
-
-loadExam();
 </script>
 </body>
 </html>
