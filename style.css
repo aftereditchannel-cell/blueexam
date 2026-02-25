@@ -1,0 +1,42 @@
+:root {
+  --primary: #1e88e5;
+  --bg: #ffffff;
+  --text: #333;
+}
+
+.dark {
+  --primary: #0d47a1;
+  --bg: #121212;
+  --text: #fff;
+}
+
+body {
+  font-family: Arial;
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+}
+
+button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+}
