@@ -9,6 +9,7 @@
 <body>
 
 <div class="container">
+
   <h2>Teacher Panel</h2>
 
   <!-- SIGN UP -->
@@ -19,7 +20,6 @@
     <input id="su_phone" placeholder="Phone Number">
     <input id="su_school" placeholder="School Name">
     <button id="signupBtn">Register</button>
-    <div class="loader" id="signupLoader"></div>
   </div>
 
   <hr>
@@ -29,17 +29,14 @@
     <h3>Sign In</h3>
     <input id="si_nationalId" placeholder="National ID">
     <button id="signinBtn">Login</button>
-    <div class="loader" id="signinLoader"></div>
   </div>
 
+  <div class="loader" style="display:none;"></div>
   <button onclick="toggleTheme()">Change Theme</button>
+
 </div>
 
 <script src="script.js"></script>
-<script>
-document.getElementById("signupBtn").addEventListener("click", signUp);
-document.getElementById("signinBtn").addEventListener("click", signIn);
-</script>
 
 </body>
 </html>
