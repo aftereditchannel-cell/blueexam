@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Exam</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="loader.css">
+</head>
+<body>
+<div class="container">
+  <h2>Create Exam</h2>
+  <input id="title" placeholder="Exam Title">
+  <input id="question" placeholder="Question">
+  <input id="opt1" placeholder="Option 1">
+  <input id="opt2" placeholder="Option 2">
+  <input id="opt3" placeholder="Option 3">
+  <input id="opt4" placeholder="Option 4">
+  <input id="correct" placeholder="Correct Option (1-4)">
+  <button onclick="createExam()">Create Exam</button>
+  <div class="loader"></div>
+</div>
+
+<script src="script.js"></script>
+<script>
+function createExam() {
+  const examId = generateId();
+  const teacher = localStorage.getItem("teacher");
+  const data = {
+    type: "exam",
+    examId: examId,
+    teacher: teacher,
+    title: document.getElementById("title").value,
+    question: document.getElementById("question").value,
+    opt1: opt1.value,
+    opt2: opt2.value,
+    opt3: opt3.value,
+    opt4: opt4.value,
+    correct: correct.value,
+    studentId: "",
+    score: ""
+  };
+
+  sendData(data);
+  alert("Exam Link: " + window.location.origin + "/exam.html?id=" + examId);
+}
+</script>
+</body>
+</html>
