@@ -1,43 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Exam</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="loader.css">
 </head>
 <body>
+
 <div class="container">
-  <h2 id="examTitle"></h2>
+  <h2 id="examTitle">Loading Exam...</h2>
+
   <div id="questionBox"></div>
+
   <input id="studentId" placeholder="National ID">
-  <button onclick="submitExam()">Submit</button>
-  <div class="loader"></div>
+
+  <button id="submitBtn" onclick="submitExam()">Submit</button>
+
+  <div class="loader" id="loader"></div>
 </div>
 
 <script src="script.js"></script>
+
 <script>
 const params = new URLSearchParams(window.location.search);
 const examId = params.get("id");
+let correctAnswer = null;
+
+window.onload = () => {
+  if (!examId) {
+    document.getElementById("examTitle").innerText = "Invalid exam link";
+    return;
+  }
+  loadExam();
+};
 
 async function loadExam() {
-  const res = await fetch(SCRIPT_URL);
-  const data = await res.json();
-  const exam = data.find(r => r[1] === examId && r[0] === "exam");
+  try {
+    document.getElementById("loader").style.display = "block";
 
-  if (!exam) return;
+    const res = await fetch(SCRIPT_URL + "?id=" + examId);
+    const data = await res.json();
 
-  document.getElementById("examTitle").innerText = exam[3];
-  document.getElementById("questionBox").innerHTML = `
-    <p>${exam[4]}</p>
-    <input type="radio" name="ans" value="1">${exam[5]}<br>
-    <input type="radio" name="ans" value="2">${exam[6]}<br>
-    <input type="radio" name="ans" value="3">${exam[7]}<br>
-    <input type="radio" name="ans" value="4">${exam[8]}<br>
-  `;
-  window.correctAnswer = exam[9];
+    document.getElementById("loader").style.display = "none";
+
+    if (!data || data.length === 0) {
+      document.getElementById("examTitle").innerText = "Exam not found";
+      return;
+    }
+
+    const exam = data[0];
+
+    document.getElementById("examTitle").innerText = exam[3];
+
+    document.getElementById("questionBox").innerHTML = `
+      <p><strong>${exam[4]}</strong></p>
+      <label><input type="radio" name="ans" value="1"> ${exam[5]}</label><br><br>
+      <label><input type="radio" name="ans" value="2"> ${exam[6]}</label><br><br>
+      <label><input type="radio" name="ans" value="3"> ${exam[7]}</label><br><br>
+      <label><input type="radio" name="ans" value="4"> ${exam[8]}</label><br><br>
+    `;
+
+    correctAnswer = String(exam[9]);
+
+  } catch (err) {
+    document.getElementById("loader").style.display = "none";
+    console.error(err);
+    document.getElementById("examTitle").innerText = "Error loading exam";
+  }
 }
 
-function submitExam() {
+async function submitExam() {
+
   const selectedOption = document.querySelector("input[name='ans']:checked");
 
   if (!selectedOption) {
@@ -45,33 +79,45 @@ function submitExam() {
     return;
   }
 
-  const studentNationalId = document.getElementById("studentId").value;
+  const studentNationalId = document.getElementById("studentId").value.trim();
 
   if (!studentNationalId) {
-    alert("123456789");
+    alert("Please enter National ID");
     return;
   }
 
-  const score = selectedOption.value === window.correctAnswer ? 1 : 0;
+  const score = selectedOption.value === correctAnswer ? 1 : 0;
 
-  sendData({
-    type: "result",
-    examId: examId,
-    teacher: "",
-    title: "",
-    question: "",
-    opt1: "",
-    opt2: "",
-    opt3: "",
-    opt4: "",
-    correct: "",
-    studentId: studentNationalId,
-    score: score
-  });
+  document.getElementById("loader").style.display = "block";
+  document.getElementById("submitBtn").disabled = true;
 
-  
-  alert("Score: " + score);
+  try {
+    await sendData({
+      type: "result",
+      examId: examId,
+      teacher: "",
+      title: "",
+      question: "",
+      opt1: "",
+      opt2: "",
+      opt3: "",
+      opt4: "",
+      correct: "",
+      studentId: studentNationalId,
+      score: score
+    });
+
+    document.getElementById("loader").style.display = "none";
+
+    alert("Your Score: " + score);
+
+  } catch (err) {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("submitBtn").disabled = false;
+    alert("Error submitting exam");
+  }
 }
 </script>
+
 </body>
 </html>
