@@ -1,4 +1,4 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8GDeRbqcqTxJA5tb_YbDalowLHzJ5X9m2Za60cZqJ-Av-D1UyXpYRH-TnM_CfHACY/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXV48UjjWRbjE0mdnt98oKe3kfNLfGZpjHZ0_rFzjK8TKOf8PYwPgo5IJOLCyqUZD9/exec";
 
 // ثبت نام
 async function signUp() {
