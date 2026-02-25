@@ -1,5 +1,4 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbymGwjNrIxVIDEQmjr0UEYC9TqmMJYmD_kFhkljUC42JfCIfD9qEpIuHxXiG-uCYFQ/exec";
-
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbymGwjNrIxVIDEQmjr0UEYC9TqmMJYmD_kFhkljUC42JfCIfD9qEpIuHxXiG-uCYFQ/exechttps://script.google.com/macros/s/AKfycbwMVcTfFK75Qe-xLJ1GAL4CgjbtD374_1o6dTZ_Ba6f8r5U8mV3Fp8y6FGSvehCCoCY/exec
 // تغییر تم
 function toggleTheme() {
   document.body.classList.toggle("dark");
